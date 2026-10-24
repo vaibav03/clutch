@@ -10,9 +10,15 @@ This script is strictly READ-ONLY: it never writes chunks, mastery, or any other
 state. It takes no network and no API key; it just reads from disk and prints
 plain text that Cubbie relays to the student.
 
+There's also a playful `cooked` subcommand: a "how cooked am I?" motivation
+check that reframes the same readiness numbers as a fun (but honest and kind)
+"cooked meter" with a next-step nudge.
+
 Usage:
   python3 scripts/stats.py show --course BIO201
   python3 scripts/stats.py --sample
+  python3 scripts/stats.py cooked --course BIO201
+  python3 scripts/stats.py cooked --sample
 """
 import argparse
 import json
@@ -208,6 +214,109 @@ def cmd_show(args):
     return 0
 
 
+# --------------------------------------------------------------------------- #
+# Subcommand: cooked  (a playful "how cooked am I?" motivation check)
+# --------------------------------------------------------------------------- #
+# cooked% = 100 - readiness%, where readiness% is the mean of box/5 across all
+# chunks (never-seen = 0). It's a hype framing of the same readiness numbers:
+# honest (driven by the real boxes) but always kept kind and motivating.
+READY_PLATED = 70  # topic readiness% at/above this is "plated" (ready)
+READY_RAW = 40     # topic readiness% below this is "raw" (needs work)
+
+
+def cooked_headline(cooked_pct):
+    """Fire/doneness label for a cooked%. Honest but never discouraging."""
+    if cooked_pct <= 20:
+        return "\U0001F9CA barely cooked — you're basically ready. Keep it warm."
+    if cooked_pct <= 45:
+        return "\U0001F373 lightly toasted — solid, a little polish left."
+    if cooked_pct <= 70:
+        return "\U0001F525 medium — getting crispy, you've got real gaps."
+    return "\U0001F480 well done — time to lock in, but it's fixable."
+
+
+def cmd_cooked(args):
+    course = SAMPLE_COURSE if args.sample else args.course
+    if not course:
+        print("ERROR: --course is required (or use --sample).")
+        return 2
+
+    cdir = course_dir(course)
+    chunks = load_chunks(cdir)
+    if not chunks:
+        # Missing or empty chunks.jsonl: one clear line, still a clean exit.
+        print(
+            f"No material for {course} yet — send me your notes or slides "
+            "first and I'll tell you how cooked you are."
+        )
+        return 0
+
+    mastery = load_mastery(cdir)
+    items = mastery["items"]
+
+    # Never quizzed: nothing has been tasted yet, so there's no honest read.
+    if not any(st.get("seen", 0) > 0 for st in items.values()):
+        print(
+            "Haven't tasted anything yet — quiz me once and I'll tell you "
+            "how cooked you are."
+        )
+        return 0
+
+    total = len(chunks)
+
+    # Readiness% = mean of box/5 across all chunks (never-seen = 0).
+    readiness_sum = sum(box_of(items, ch["id"]) / MAX_BOX for ch in chunks)
+    readiness_pct = round(100 * readiness_sum / total)
+    cooked_pct = 100 - readiness_pct
+
+    # Per-source (topic) readiness, first-seen order preserved for stable ties.
+    order = []
+    stats = {}
+    for ch in chunks:
+        src = ch.get("source", "?")
+        if src not in stats:
+            stats[src] = {"total": 0, "box_sum": 0.0}
+            order.append(src)
+        s = stats[src]
+        s["total"] += 1
+        s["box_sum"] += box_of(items, ch["id"]) / MAX_BOX
+
+    rows = []
+    for src in order:
+        s = stats[src]
+        frac = s["box_sum"] / s["total"] if s["total"] else 0.0
+        rows.append((src, round(frac * 100)))
+
+    plated = [src for src, pct in rows if pct >= READY_PLATED]
+    raw = [src for src, pct in rows if pct < READY_RAW]
+
+    # Weakest first; stable within equal scores by original order.
+    rows_by_weak = sorted(rows, key=lambda r: (r[1], order.index(r[0])))
+    weakest = rows_by_weak[0][0] if rows_by_weak else None
+
+    # ---- print the cooked meter ----------------------------------------- #
+    out = []
+    out.append(f"=== {course} cooked meter ===")
+    out.append(f"cooked% {cooked_pct}  (readiness {readiness_pct}%)")
+    out.append(f"  [{bar(cooked_pct / 100)}]")
+    out.append(cooked_headline(cooked_pct))
+    out.append("")
+    out.append("Plated (ready): " + (", ".join(plated) if plated else "none yet"))
+    out.append("Raw (needs work): " + (", ".join(raw) if raw else "none"))
+    out.append("")
+    if weakest is not None:
+        out.append(
+            f"Next step: hit {weakest} first — a little heat there "
+            "and the meter drops fast. You've got this."
+        )
+
+    text = "\n".join(out)
+    if len(text) > STDOUT_BUDGET:
+        text = text[: STDOUT_BUDGET - 1].rstrip() + "…"
+    print(text)
+    return 0
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(
         description="Gamified progress summary for exam-mode (read-only)."
@@ -221,6 +330,13 @@ def main(argv=None):
     p_show.add_argument("--course")
     p_show.add_argument("--sample", action="store_true")
     p_show.set_defaults(func=cmd_show)
+
+    p_cooked = sub.add_parser(
+        "cooked", help="playful 'how cooked am I?' motivation check"
+    )
+    p_cooked.add_argument("--course")
+    p_cooked.add_argument("--sample", action="store_true")
+    p_cooked.set_defaults(func=cmd_cooked)
 
     args = ap.parse_args(argv)
 

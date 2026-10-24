@@ -69,15 +69,16 @@ every time for the same class so its material stays together.
 ### Phase 1 — Set up the course (gather material)
 
 1. Decide the course tag with the student (for example `BIO201`).
-2. Collect the material. For each piece:
-   - Read the student's Canvas course files, slides, pages and readings. If
-     Canvas is not connected, ask the student to connect it or to send the
-     material directly, then continue with whatever you have.
-   - Read any PDFs, notes or photos (such as a photo of the whiteboard) the
-     student sends.
-   - Transcribe any lecture recording or voice note the student sends to plain
-     text.
-3. Pass each piece's text to the knowledge base, one run per source, with a clear
+2. Pull the material from Canvas automatically — this is the primary path. The
+   student does NOT have to upload anything. When the student names a course (or
+   an upcoming exam), read that course's files, slides, lecture materials, pages
+   and readings from Canvas and ingest them into the knowledge base without asking
+   the student to upload. If Canvas is not connected, ask them to connect it, then
+   go ahead and pull everything in automatically.
+3. The student only sends files for anything NOT on Canvas:
+   - Any PDFs, notes or photos (such as a photo of the whiteboard) they have.
+   - Any lecture recording or voice note — transcribe it to plain text.
+4. Pass each piece's text to the knowledge base, one run per source, with a clear
    label for where it came from:
 
    ```bash
@@ -87,7 +88,7 @@ every time for the same class so its material stays together.
    Use `--text "<text>"` instead of `--file` when you already have the text
    (for example a transcript). The label is what gets cited later, so make it
    specific: "Slides Ch5", "Lecture 3", "Syllabus".
-4. Tell the student what is now in their study set and offer to teach or quiz.
+5. Tell the student what is now in their study set and offer to teach or quiz.
 
 ### Phase 2 — Teach a topic
 
@@ -217,6 +218,21 @@ It prints overall mastery %, how many chunks are locked in, the study streak, a
 per-topic bar, the weakest topics, and how much is due today. Keep the reply to
 the highlights — mastery %, the streak, and the weakest topic or two — not the
 whole dashboard.
+
+### How cooked am I? (motivation check)
+
+Use this when the student asks "how cooked am I", "am I cooked", "how screwed am
+I for this exam", or anything in that playful, worried voice.
+
+```bash
+python3 scripts/stats.py cooked --course <COURSE>
+```
+
+It reads the same readiness data as the progress check, just with a hype "cooked
+meter" framing — a cooked% (the inverse of readiness), a fun doneness label, which
+topics are plated (ready) versus raw (weak), and the single weakest topic to hit
+first. Relay the verdict and that one motivating next step in your short, plain,
+encouraging voice. Keep it honest but kind — name the real gap, never pile on.
 
 ### Export study materials (any time)
 

@@ -24,20 +24,23 @@ The page is at `http://localhost:8777/index.html`.
 - Preview free first with `--dry-voice`, QA the contact sheet, then record once.
 - When it asks for the script, use the draft below (or let it write one and tweak).
 
-## 4. Premium narration draft (~165 words, ~70s — first person, natural)
+## 4. Narration script (~160 words, ~70s — first person, natural)
 
-> Okay — finals week. Five lectures, a stack of slides, no idea where to start.
-> This is Clutch. You just text it your slides and your lecture recordings, and it
-> quietly builds a study set out of your actual class. Then you can ask it anything —
-> "explain the Krebs cycle" — and it teaches you from your own slides, and tells you
-> exactly which one it pulled from. Honestly, the part I like most is it quizzes you on
-> its own. A question shows up mid-day, you answer, and whatever you miss comes back
-> sooner. The night before, you ask "am I ready?" and it's blunt about it — green,
-> green, red — so your last hour goes where it counts. And then, exam morning? It
-> actually calls you. Wakes you up, runs your three weak spots one more time. It
-> coaches you — it never does the graded work for you. That's Clutch.
+> It's 11pm. Exam's at 9. Five lectures I never rewatched. I'm cooked.
+> So I texted Clutch. It pulled my slides and lectures straight from Canvas and built a
+> study set out of my actual class. I asked it to explain the Krebs cycle — and it
+> taught me from my own slides, and told me exactly which slide it came from.
+> Then it started quizzing me. Whatever I missed, it brought back sooner — right when
+> I thought I was free. Around 1am I asked, "am I ready?" It didn't sugarcoat it:
+> green, green, red. So my last hour went straight to the red one.
+> And then exam morning — it actually called me. Woke me up and ran my three weak
+> spots one last time. It won't do your homework. It just makes sure you pull it off.
+> That's Clutch.
 
-Scene cues (match the page scenes): intro on the hero → "text it your slides" on scene 1 → "teaches you… slide" on scene 2 → "quizzes you" on scene 3 → "am I ready… green green red" on scene 4 → "actually calls you" on scene 5 → end card.
+On-screen hook (first 3 seconds): **"11pm. exam at 9. i'm cooked."** → cut to Clutch.
+End card: **Clutch ⚡ — for when the exam's tomorrow.**
+
+Scene cues (match the page scenes): "I'm cooked" hook, then the hero on "texted Clutch" → "pulled my slides… from Canvas" on scene 1 → "taught me from my own slides" on scene 2 → "started quizzing me" on scene 3 → "am I ready?… green, green, red" on scene 4 → "actually called me" on scene 5 → end card.
 
 ## 5. Deliver
 Output lands at `demo-video/renders/final.mp4` (1080p, 30fps). Post it, then add the link to your hackathon submission (up to 5 extra social posts count too).

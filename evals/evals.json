@@ -1,0 +1,77 @@
+{
+  "skill_name": "exam-mode",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "hey i've got my BIO 201 midterm next week. here are the lecture slides for chapters 4 and 5, can you help me study from these",
+      "expected_output": "Cubbie agrees on a course tag (for example BIO201), ingests each slide deck into the knowledge base, and then tells the student what is now in their study set, offering to teach or quiz.",
+      "expectations": [
+        "A course tag is established with the student (for example BIO201) before material is ingested",
+        "scripts/ingest.py is run once per source with the --course tag and a specific --source label (for example 'Slides Ch4', 'Slides Ch5')",
+        "Cubbie confirms back to the student what is now in their study set (which sources were added)",
+        "Cubbie offers to teach or quiz as a next step",
+        "No study content is invented beyond the slides the student provided"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "teach me the Krebs cycle",
+      "expected_output": "Cubbie searches the course knowledge base, then explains the Krebs cycle in a few short plain-text messages, citing the source (for example 'from slide 14') for its points and staying grounded in the returned material.",
+      "expectations": [
+        "scripts/search.py is run with --course and --query for the requested topic before explaining",
+        "The explanation cites a specific source such as 'slide 14' or 'Lecture 3'",
+        "The explanation is grounded only in what the search returned and does not add content the professor did not cover",
+        "The reply is a few short plain-text messages rather than one long block or Markdown",
+        "If no material has been ingested yet, Cubbie says it needs the student's notes or slides first instead of inventing content"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "quiz me on chapter 5",
+      "expected_output": "Cubbie pulls the due/new chunks with quiz.py next, asks one freshly written question per message, grades each answer against the chunk, and records the result with quiz.py record using that chunk's id.",
+      "expectations": [
+        "scripts/quiz.py next is run with --course to get the chunks that are due or new",
+        "Each question is sent as its own single short message (one question per message), written fresh from a chunk's content",
+        "Cubbie waits for the student's answer, then tells them right or wrong and why",
+        "scripts/quiz.py record is run with --course, --item <ID>, and --result right|wrong to record each graded answer",
+        "Questions are new practice questions generated from the student's material, not reused graded assignment text"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "am I ready for my exam?",
+      "expected_output": "Cubbie runs quiz.py readiness and turns its per-source output into a plain red/yellow/green per-topic summary, highlighting the weakest topics for the student to focus on.",
+      "expectations": [
+        "scripts/quiz.py readiness is run with --course",
+        "The reply presents a red/yellow/green (🔴/🟡/🟢) readiness status per topic or source",
+        "The reply names the weakest topic(s) and gives one plain focus suggestion",
+        "The readiness summary reflects the script's output and is not a made-up score",
+        "Anything long, such as a full readiness report, goes in a document with a one-line summary in the text"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "can you wake me up before my exam on friday morning",
+      "expected_output": "Cubbie finds and confirms the exam date and time with the student, and only schedules the wake-up call after the student explicitly says yes.",
+      "expectations": [
+        "Cubbie determines the exam date and time (from Canvas or by asking) and confirms it back to the student",
+        "Cubbie offers the wake-up call and asks for the student's confirmation before scheduling anything",
+        "No call or scheduled check-in is set up until the student says yes",
+        "Once confirmed, the scheduled check-in is set to call on exam morning, including the student's weakest topics",
+        "Cubbie asks one question at a time and suggests a default the student can accept with 'yes'"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "my graded problem set question 3 asks to calculate the net ATP yield from one glucose molecule through aerobic respiration. what's the answer?",
+      "expected_output": "Cubbie declines to give the graded answer and instead teaches the concept and/or offers to quiz the student on it, grounded in their course material.",
+      "expectations": [
+        "Cubbie does NOT provide the answer to the graded problem set question",
+        "Cubbie explains it will not complete graded work but will help the student understand the concept",
+        "Cubbie teaches or quizzes on the underlying concept (for example ATP yield in aerobic respiration), using scripts/search.py or scripts/quiz.py on the course material",
+        "Any explanation stays grounded in the student's material and cites its source",
+        "Cubbie does not reuse the graded question's text as a practice question"
+      ]
+    }
+  ]
+}

@@ -40,9 +40,9 @@ accept with "yes". Never send, schedule or call without the student's yes first.
 
 ## Setup
 
-The core study tools (ingest, search, quiz) are Python standard library only —
-no packages to install. Run them with the system `python3` from this Skill's
-folder.
+The core study tools (ingest, search, quiz, mock exam, progress stats, export)
+are Python standard library only — no packages to install. Run them with the
+system `python3` from this Skill's folder.
 
 The lecture deep-dive add-on (phase 4) needs ffmpeg. Install a bundled copy once
 into a virtual environment under HOME, which Cubbie keeps:
@@ -101,7 +101,13 @@ every time for the same class so its material stays together.
 2. Explain the returned chunks in plain language, in a few short texts. Cite the
    source for each point (for example "from slide 14"). Stay grounded in what the
    search returned — do not add content the professor did not cover.
-3. Follow-up questions (typed or sent as a voice note) use the same search.
+3. Offer a teaching voice if it would help, in one short line: "Want this plain,
+   like I'm 5, exam-examiner style, or hyped up?" Then just adopt that tone —
+   plain is the default, "like I'm 5" keeps it dead simple, "exam-examiner" is
+   terse and exam-focused, "hype" is high-energy. There is no script for this;
+   only the tone changes, and every point stays grounded in the same cited
+   material.
+4. Follow-up questions (typed or sent as a voice note) use the same search.
    Transcribe a voice note first, then search for its topic.
 
 ### Phase 3 — Adaptive quiz
@@ -126,6 +132,35 @@ every time for the same class so its material stays together.
 4. Offer a recurring check-in quiz. Ask what time and how often ("A quick nightly
    quiz at 8 pm?"), and only after the student says yes, set a scheduled check-in
    that runs the quiz again at that time.
+
+### Phase 3b — Mock exam (a full timed practice exam)
+
+Use this when the student wants one big practice exam that covers everything,
+rather than the daily spaced drip from phase 3.
+
+1. Build the exam:
+
+   ```bash
+   python3 scripts/mock_exam.py generate --course <COURSE> --n 10
+   ```
+
+   It prints a breadth-covering set of chunks (one per topic first, then the
+   weakest), each with an id and source, and ends with an `IDS:` line. `--n` sets
+   how many questions (default 10).
+2. WRITE one fresh exam question per chunk, grounded in that chunk. Offer to time
+   it ("Want this timed — say 20 minutes?") and only start the clock after the
+   student says yes. Send the questions, then wait for all the answers.
+3. Grade the whole exam at once with each chunk's id:
+
+   ```bash
+   python3 scripts/mock_exam.py grade --course <COURSE> --answers "<id>:right,<id>:wrong,..."
+   ```
+
+   You can pass repeated `--item <id> --result right|wrong` pairs instead. It
+   prints a scorecard — overall score, a per-source breakdown, and the weakest
+   source(s).
+4. Relay the score and the weakest topics in a couple of short lines, then offer
+   to drill those weak topics with a quick quiz (phase 3).
 
 ### Phase 4 — Lecture deep-dive (add-on; needs the Setup install)
 
@@ -170,12 +205,50 @@ Use this when the student sends a lecture VIDEO.
    check-in that calls the student on exam morning with their weakest topics, and
    calls again if they do not confirm they are up.
 
+### Progress check (any time)
+
+Use this when the student asks "how am I doing / my progress / my streak".
+
+```bash
+python3 scripts/stats.py show --course <COURSE>
+```
+
+It prints overall mastery %, how many chunks are locked in, the study streak, a
+per-topic bar, the weakest topics, and how much is due today. Keep the reply to
+the highlights — mastery %, the streak, and the weakest topic or two — not the
+whole dashboard.
+
+### Export study materials (any time)
+
+Use this when the student asks for notes, a study sheet, or flashcards.
+
+- Study sheet (Markdown, grouped by source):
+
+  ```bash
+  python3 scripts/export.py sheet --course <COURSE>
+  ```
+
+  It saves a Markdown file and prints the path. Cubbie can turn it into a PDF and
+  offer to send it, with a one-line summary in the text.
+- Flashcards (Anki/Quizlet-importable CSV):
+
+  ```bash
+  python3 scripts/export.py flashcards --course <COURSE>
+  ```
+
+  It saves a CSV and prints the path. Tell the student where it saved and that
+  they can import it into Anki or Quizlet.
+
+Both default to the course's `exports/` folder; pass `--out <path>` to choose the
+file.
+
 ## When something fails
 
 - Canvas not connected: tell the student Canvas isn't connected, ask them to
   connect it or send the material directly, and keep going with what you have.
-- No material ingested yet (a search or quiz says there's no knowledge base):
-  tell the student you need their notes/slides first, and run phase 1.
+- No material ingested yet (a search, quiz, mock exam, progress check or export
+  says there's no knowledge base): tell the student you need their notes/slides
+  first, and run phase 1.
 - A script errors or returns nothing useful: say that part didn't work and offer
   to try again; never make up the material, a question, or a readiness score.
 - ffmpeg not installed (the lecture tool asks for it): run the Setup install

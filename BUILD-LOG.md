@@ -34,7 +34,21 @@ Flagship Cubbie Skill: ingest course materials → sandbox knowledge base → te
 | 5 | Validate (kit validator) + sample runs of all scripts | me | ✅ PASS — validator OK, no warnings; full e2e works |
 | 6 | Demo checklist for testing on real Cubbie | me | ✅ done → DEMO-CHECKLIST.md |
 
-## STATUS: MVP complete & validated (local only, unpublished). Next = test on a real Cubbie, then publish when you decide.
+## STATUS: MVP + feature pack complete & validated. Private repo: github.com/vaibav03/exam-mode (pushed).
+
+## Feature pack (added after MVP, subagent-built, all tested)
+| Piece | What | Status |
+|---|---|---|
+| `scripts/mock_exam.py` | breadth-covering timed mock exam (generate/grade) | ✅ |
+| `scripts/stats.py` | gamified progress: mastery %, streak, per-topic bars | ✅ |
+| `scripts/export.py` | study sheet (MD) + Anki/Quizlet flashcards (CSV) | ✅ |
+| `evals/evals.json` | 6-scenario self-test (kit schema) | ✅ |
+| `demo/index.html` | premium mock-iMessage product demo page (video target) | ✅ QA'd in browser |
+| `SKILL.md` + `README.md` | integrated all features + teaching voice modes | ✅ validator OK |
+| `VIDEO.md` | premium narration + demo-video run steps (user runs; needs ElevenLabs key) | ✅ |
+
+Validator: `OK exam-mode` (only an informational "uncommitted changes" note, cleared on commit).
+Next: test on a real Cubbie (DEMO-CHECKLIST.md); make the video (VIDEO.md); flip repo public to install/submit.
 
 ## Lecture add-on (phase 4) — refined per user
 ffmpeg extracts scene-change frames → Cubbie reads each frame (vision) in a background task, batches → compares to slides already in KB → KEEPS ONLY frames with content not in slides (board work, live annotations, demos) → turns those + transcript into notes → ingests as source "<lecture> - lecture notes". Note: a Skill can't control Cubbie's internal subagents; SKILL.md requests background/batch processing instead.

@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>exam-mode</title>
+<meta name="description" content="A Cubbie Skill that turns your slides and lectures into a coach that teaches, quizzes, and wakes you up.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #fbf6ec;
+    --cream-2: #f3ebdb;
+    --surface: #ffffff;
+    --surface-2: #fdfaf3;
+    --ink: #2f2a22;
+    --ink-soft: #6b6153;
+    --ink-faint: #9a8f7e;
+    --line: #ece2cf;
+    --bear: #c8824a;
+    --bear-soft: #f6e4d2;
+    --blue: #0a84ff;
+    --blue-grad-a: #2f9bff;
+    --blue-grad-b: #0a74f0;
+    --bubble-in: #eceae6;
+    --bubble-in-ink: #2f2a22;
+    --green: #35c759;
+    --yellow: #ffcc00;
+    --red: #ff4d4d;
+    --shadow: 0 18px 45px -18px rgba(70, 52, 24, 0.35);
+    --shadow-soft: 0 8px 24px -12px rgba(70, 52, 24, 0.28);
+    --radius-phone: 42px;
+    --radius-bubble: 20px;
+    --accent-glow: rgba(200, 130, 74, 0.22);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --cream: #14110d;
+      --cream-2: #1b1712;
+      --surface: #201b15;
+      --surface-2: #26201a;
+      --ink: #f3ead9;
+      --ink-soft: #c2b5a1;
+      --ink-faint: #8c806e;
+      --line: #342c22;
+      --bear: #e0a06a;
+      --bear-soft: #3a2c1f;
+      --bubble-in: #2d261e;
+      --bubble-in-ink: #f1e8d8;
+      --blue: #0a84ff;
+      --blue-grad-a: #3a9dff;
+      --blue-grad-b: #0a74f0;
+      --shadow: 0 22px 55px -20px rgba(0, 0, 0, 0.7);
+      --shadow-soft: 0 10px 30px -14px rgba(0, 0, 0, 0.6);
+      --accent-glow: rgba(224, 160, 106, 0.18);
+    }
+  }
+  :root[data-theme="dark"] {
+    --cream: #14110d;
+    --cream-2: #1b1712;
+    --surface: #201b15;
+    --surface-2: #26201a;
+    --ink: #f3ead9;
+    --ink-soft: #c2b5a1;
+    --ink-faint: #8c806e;
+    --line: #342c22;
+    --bear: #e0a06a;
+    --bear-soft: #3a2c1f;
+    --bubble-in: #2d261e;
+    --bubble-in-ink: #f1e8d8;
+    --blue: #0a84ff;
+    --blue-grad-a: #3a9dff;
+    --blue-grad-b: #0a74f0;
+    --shadow: 0 22px 55px -20px rgba(0, 0, 0, 0.7);
+    --shadow-soft: 0 10px 30px -14px rgba(0, 0, 0, 0.6);
+    --accent-glow: rgba(224, 160, 106, 0.18);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--ink);
+    background-color: var(--cream);
+    background-image:
+      radial-gradient(900px 500px at 12% -5%, var(--accent-glow), transparent 60%),
+      radial-gradient(800px 480px at 95% 8%, rgba(10, 132, 255, 0.10), transparent 55%);
+    background-attachment: fixed;
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 16px 72px;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    text-align: center;
+    padding: 64px 4px 36px;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    color: var(--bear);
+    background: var(--bear-soft);
+    border: 1px solid var(--line);
+    padding: 7px 14px;
+    border-radius: 999px;
+    margin-bottom: 22px;
+  }
+  .hero h1 {
+    font-size: clamp(44px, 12vw, 86px);
+    font-weight: 900;
+    letter-spacing: -0.035em;
+    margin: 0;
+    line-height: 0.98;
+    background: linear-gradient(135deg, var(--ink), var(--bear));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero .tag {
+    font-size: clamp(17px, 4.6vw, 23px);
+    font-weight: 600;
+    color: var(--ink-soft);
+    max-width: 30ch;
+    margin: 20px auto 0;
+  }
+  .hero .pills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 9px;
+    margin-top: 28px;
+  }
+  .pill {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 8px 14px;
+    border-radius: 999px;
+    box-shadow: var(--shadow-soft);
+  }
+  .scroll-hint {
+    margin-top: 40px;
+    color: var(--ink-faint);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .scroll-hint .arrow {
+    display: block;
+    margin: 10px auto 0;
+    width: 22px;
+    height: 22px;
+    border-right: 3px solid var(--bear);
+    border-bottom: 3px solid var(--bear);
+    transform: rotate(45deg);
+    animation: bob 1.8s ease-in-out infinite;
+  }
+  @keyframes bob {
+    0%, 100% { transform: rotate(45deg) translate(0, 0); opacity: 0.5; }
+    50% { transform: rotate(45deg) translate(4px, 4px); opacity: 1; }
+  }
+
+  /* ---------- SCENES ---------- */
+  .scene {
+    margin-top: 58px;
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .scene.in { opacity: 1; transform: none; }
+
+  .scene-label {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin: 0 4px 16px;
+  }
+  .scene-num {
+    font-size: 13px;
+    font-weight: 900;
+    color: #fff;
+    background: var(--bear);
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    box-shadow: var(--shadow-soft);
+  }
+  .scene-label h2 {
+    font-size: clamp(19px, 5vw, 25px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0;
+    color: var(--ink);
+  }
+  .scene-label .cap {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink-faint);
+    margin-top: 2px;
+  }
+
+  /* ---------- PHONE / CHAT CARD ---------- */
+  .phone {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-phone);
+    box-shadow: var(--shadow);
+    padding: 14px 14px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .phone::before {
+    content: "";
+    position: absolute;
+    top: 11px; left: 50%;
+    transform: translateX(-50%);
+    width: 110px; height: 6px;
+    background: var(--line);
+    border-radius: 999px;
+    opacity: 0.8;
+  }
+  .chat-head {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 20px 8px 14px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 16px;
+  }
+  .avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #f0c89b, var(--bear));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex: 0 0 auto;
+    box-shadow: inset 0 -3px 8px rgba(120, 70, 20, 0.25);
+  }
+  .chat-head .who { font-weight: 800; font-size: 16px; color: var(--ink); }
+  .chat-head .status {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .chat-head .status::before {
+    content: "";
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+  }
+
+  .thread { display: flex; flex-direction: column; gap: 10px; padding: 0 4px; }
+
+  .time-sep {
+    text-align: center;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--ink-faint);
+    margin: 6px 0 2px;
+    letter-spacing: 0.02em;
+  }
+  .time-sep b { color: var(--ink-soft); font-weight: 800; }
+
+  .row { display: flex; }
+  .row.out { justify-content: flex-end; }
+  .row.in { justify-content: flex-start; }
+
+  .bubble {
+    max-width: 78%;
+    padding: 11px 15px;
+    border-radius: var(--radius-bubble);
+    font-size: 15.5px;
+    font-weight: 600;
+    line-height: 1.42;
+    position: relative;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+  }
+  .bubble.out {
+    background: linear-gradient(160deg, var(--blue-grad-a), var(--blue-grad-b));
+    color: #fff;
+    border-bottom-right-radius: 7px;
+    box-shadow: 0 6px 16px -8px rgba(10, 116, 240, 0.6);
+  }
+  .bubble.in {
+    background: var(--bubble-in);
+    color: var(--bubble-in-ink);
+    border-bottom-left-radius: 7px;
+  }
+  .bubble .cite {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--bear);
+    font-style: italic;
+  }
+  .bubble .cite::before { content: "📄 "; font-style: normal; }
+
+  /* attachment bubbles */
+  .attach {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 10px 13px;
+    min-width: 210px;
+  }
+  .attach + .attach { margin-top: 7px; }
+  .attach .ic {
+    width: 34px; height: 34px;
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; flex: 0 0 auto;
+    color: #fff;
+  }
+  .attach .ic.pdf { background: linear-gradient(150deg, #ff6b6b, #e03131); }
+  .attach .ic.aud { background: linear-gradient(150deg, #845ef7, #6741d9); }
+  .attach .meta .name { font-weight: 800; font-size: 14px; color: var(--ink); }
+  .attach .meta .sub { font-size: 12px; font-weight: 600; color: var(--ink-faint); }
+
+  .out-stack { display: flex; flex-direction: column; align-items: flex-end; gap: 7px; max-width: 82%; }
+
+  /* readiness chips */
+  .ready-chips { display: flex; flex-wrap: wrap; gap: 7px; margin: 9px 0 3px; }
+  .chip {
+    font-size: 13px;
+    font-weight: 800;
+    padding: 5px 11px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--bubble-in-ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+  .dot { width: 9px; height: 9px; border-radius: 50%; flex: 0 0 auto; }
+  .dot.g { background: var(--green); box-shadow: 0 0 0 3px rgba(53,199,89,0.2); }
+  .dot.y { background: var(--yellow); box-shadow: 0 0 0 3px rgba(255,204,0,0.2); }
+  .dot.r { background: var(--red); box-shadow: 0 0 0 3px rgba(255,77,77,0.22); }
+
+  /* streak flourish */
+  .streak {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+    font-weight: 900;
+    font-size: 13px;
+    color: var(--bear);
+    background: var(--bear-soft);
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  /* incoming call card */
+  .call-card {
+    background: linear-gradient(165deg, #2a2520, #15110c);
+    border-radius: 26px;
+    padding: 26px 22px;
+    text-align: center;
+    margin-bottom: 14px;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: var(--shadow);
+  }
+  .call-card .cavatar {
+    width: 74px; height: 74px;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #f0c89b, var(--bear));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 38px;
+    box-shadow: 0 0 0 0 rgba(53,199,89,0.5);
+    animation: ring 1.6s ease-out infinite;
+  }
+  @keyframes ring {
+    0% { box-shadow: 0 0 0 0 rgba(53,199,89,0.55); }
+    100% { box-shadow: 0 0 0 26px rgba(53,199,89,0); }
+  }
+  .call-card .cname { color: #fff; font-weight: 800; font-size: 20px; }
+  .call-card .cstat { color: rgba(255,255,255,0.7); font-weight: 600; font-size: 14px; margin-top: 3px; letter-spacing: 0.03em; }
+  .call-card .cbtns { display: flex; justify-content: center; gap: 46px; margin-top: 22px; }
+  .call-card .cbtn {
+    width: 56px; height: 56px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    flex: 0 0 auto;
+  }
+  .call-card .cbtn.decline { background: var(--red); }
+  .call-card .cbtn.accept { background: var(--green); animation: jiggle 1.6s ease-in-out infinite; }
+  .call-card .cbtn .lbl { position: absolute; }
+  @keyframes jiggle {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+  .cbtn-wrap { display: flex; flex-direction: column; align-items: center; gap: 7px; }
+  .cbtn-wrap span { color: rgba(255,255,255,0.65); font-size: 12px; font-weight: 700; }
+
+  .missed-note {
+    text-align: center;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--ink-faint);
+    margin-bottom: 8px;
+  }
+
+  /* guardrail strip */
+  .guardrail {
+    margin-top: 58px;
+    text-align: center;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: 26px 22px;
+    box-shadow: var(--shadow-soft);
+  }
+  .guardrail .big { font-size: 28px; }
+  .guardrail h3 { margin: 10px 0 6px; font-size: 19px; font-weight: 800; }
+  .guardrail p { margin: 0 auto; max-width: 42ch; color: var(--ink-soft); font-weight: 600; font-size: 15px; }
+
+  /* footer */
+  footer {
+    margin-top: 54px;
+    text-align: center;
+    color: var(--ink-faint);
+    font-weight: 700;
+    font-size: 14px;
+    padding-top: 26px;
+    border-top: 1px solid var(--line);
+  }
+  footer .heart { color: var(--bear); }
+
+  @media (max-width: 420px) {
+    .bubble { max-width: 84%; font-size: 15px; }
+    .attach { min-width: 0; width: 100%; }
+    .call-card .cbtns { gap: 36px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <span class="badge">🐻 A Cubbie Skill</span>
+    <h1>exam-mode</h1>
+    <p class="tag">Your slides and lectures, turned into a coach that teaches, quizzes, and wakes you up.</p>
+    <div class="pills">
+      <span class="pill">📚 Learns your materials</span>
+      <span class="pill">🧠 Adaptive quizzing</span>
+      <span class="pill">🚦 Readiness tracking</span>
+      <span class="pill">☎️ Wake-up calls</span>
+    </div>
+    <div class="scroll-hint">
+      See how it works
+      <span class="arrow"></span>
+    </div>
+  </header>
+
+  <!-- SCENE 1 -->
+  <section class="scene">
+    <div class="scene-label">
+      <span class="scene-num">1</span>
+      <div>
+        <h2>Set up your course</h2>
+        <span class="cap">Drop in your slides and recordings — Cubbie builds a personal study set.</span>
+      </div>
+    </div>
+    <div class="phone">
+      <div class="chat-head">
+        <div class="avatar">🐻</div>
+        <div>
+          <div class="who">Cubbie</div>
+          <div class="status">active now</div>
+        </div>
+      </div>
+      <div class="thread">
+        <div class="time-sep">Today <b>9:41 AM</b></div>
+        <div class="row out">
+          <div class="bubble out">set me up for my BIO 201 midterm</div>
+        </div>
+        <div class="row out">
+          <div class="out-stack">
+            <div class="attach">
+              <div class="ic pdf">📄</div>
+              <div class="meta">
+                <div class="name">Lecture5_slides.pdf</div>
+                <div class="sub">42 slides · 3.1 MB</div>
+              </div>
+            </div>
+            <div class="attach">
+              <div class="ic aud">🎙️</div>
+              <div class="meta">
+                <div class="name">Lecture 5 recording.m4a</div>
+                <div class="sub">audio · 48 min</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row in">
+          <div class="bubble in">Done — I read 42 slides + 2 lectures into your BIO 201 study set 📚 Want me to teach a topic or quiz you?</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 2 -->
+  <section class="scene">
+    <div class="scene-label">
+      <span class="scene-num">2</span>
+      <div>
+        <h2>It teaches from YOUR slides</h2>
+        <span class="cap">Plain-English explanations, grounded in the exact slide — no generic internet answers.</span>
+      </div>
+    </div>
+    <div class="phone">
+      <div class="chat-head">
+        <div class="avatar">🐻</div>
+        <div>
+          <div class="who">Cubbie</div>
+          <div class="status">active now</div>
+        </div>
+      </div>
+      <div class="thread">
+        <div class="row out">
+          <div class="bubble out">explain the Krebs cycle</div>
+        </div>
+        <div class="row in">
+          <div class="bubble in">
+            Think of it as the cell's energy spin cycle 🔄 Acetyl-CoA joins a 4-carbon molecule, and over 8 steps the carbons get stripped off as CO₂.<br><br>
+            Each turn hands off high-energy electrons to NADH and FADH₂ (which feed the electron transport chain later) and makes a little ATP directly.
+            <span class="cite">from slide 14</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 3 -->
+  <section class="scene">
+    <div class="scene-label">
+      <span class="scene-num">3</span>
+      <div>
+        <h2>Adaptive pop quizzes that come to you</h2>
+        <span class="cap">Spaced repetition that resurfaces what you miss — right when you'd start to forget.</span>
+      </div>
+    </div>
+    <div class="phone">
+      <div class="chat-head">
+        <div class="avatar">🐻</div>
+        <div>
+          <div class="who">Cubbie</div>
+          <div class="status">active now</div>
+        </div>
+      </div>
+      <div class="thread">
+        <div class="time-sep">Tuesday <b>3:12 PM</b></div>
+        <div class="row in">
+          <div class="bubble in">pop quiz 🔥 what does the Krebs cycle produce?</div>
+        </div>
+        <div class="row out">
+          <div class="bubble out">NADH, FADH2, some ATP + CO2</div>
+        </div>
+        <div class="row in">
+          <div class="bubble in">
+            ✅ nailed it.
+            <span class="streak">🔥 9-day streak</span><br>
+            I'll bring back what you miss sooner.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 4 -->
+  <section class="scene">
+    <div class="scene-label">
+      <span class="scene-num">4</span>
+      <div>
+        <h2>Know if you're actually ready</h2>
+        <span class="cap">A red / yellow / green readout per topic, so your last hour goes where it counts.</span>
+      </div>
+    </div>
+    <div class="phone">
+      <div class="chat-head">
+        <div class="avatar">🐻</div>
+        <div>
+          <div class="who">Cubbie</div>
+          <div class="status">active now</div>
+        </div>
+      </div>
+      <div class="thread">
+        <div class="time-sep">Wednesday <b>10:45 PM</b></div>
+        <div class="row out">
+          <div class="bubble out">am I ready for tomorrow?</div>
+        </div>
+        <div class="row in">
+          <div class="bubble in">
+            Here's where you stand:
+            <div class="ready-chips">
+              <span class="chip"><span class="dot g"></span> Ch 4 🟢</span>
+              <span class="chip"><span class="dot g"></span> Ch 5 🟢</span>
+              <span class="chip"><span class="dot r"></span> Ch 6 🔴</span>
+            </div>
+            spend your last hour on Ch 6 (electron transport), then sleep 🌙
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 5 -->
+  <section class="scene">
+    <div class="scene-label">
+      <span class="scene-num">5</span>
+      <div>
+        <h2>It calls to wake you</h2>
+        <span class="cap">An actual phone call on exam morning — with a last-minute drill on your weak spots.</span>
+      </div>
+    </div>
+    <div class="phone">
+      <div class="chat-head">
+        <div class="avatar">🐻</div>
+        <div>
+          <div class="who">Cubbie</div>
+          <div class="status">active now</div>
+        </div>
+      </div>
+      <div class="thread">
+        <div class="time-sep">Exam day <b>7:00 AM</b></div>
+        <div class="call-card">
+          <div class="cavatar">🐻</div>
+          <div class="cname">Cubbie</div>
+          <div class="cstat">calling… ☎️ wake-up</div>
+          <div class="cbtns">
+            <div class="cbtn-wrap">
+              <div class="cbtn decline">✕</div>
+              <span>decline</span>
+            </div>
+            <div class="cbtn-wrap">
+              <div class="cbtn accept">📞</div>
+              <span>accept</span>
+            </div>
+          </div>
+        </div>
+        <div class="row in">
+          <div class="bubble in">
+            ☀️ morning! exam in 2 hours. quick: the 3 things you kept missing —<br><br>
+            • glycolysis ATP count<br>
+            • ETC location<br>
+            • FADH₂ yield<br><br>
+            you've got this. 💪
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GUARDRAIL -->
+  <section class="guardrail scene">
+    <div class="big">🛡️</div>
+    <h3>Coaches, never cheats</h3>
+    <p>exam-mode teaches, quizzes, and keeps you accountable — but it never does graded work for you. The grade stays yours.</p>
+  </section>
+
+  <footer>
+    A Cubbie Skill · built for the Cubbie Hackathon <span class="heart">🐻</span>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var scenes = document.querySelectorAll('.scene');
+    if (!('IntersectionObserver' in window)) {
+      scenes.forEach(function (s) { s.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+    scenes.forEach(function (s) { io.observe(s); });
+  })();
+</script>
+</body>
+</html>

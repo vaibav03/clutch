@@ -1,9 +1,9 @@
-# Exam Mode — a Cubbie Skill
+# Clutch — a Cubbie Skill
 
 **Your course material, turned into a personal exam coach that lives in your texts.**
 
-Send Cubbie your slides, notes, photos of the board, and lecture recordings. Exam
-Mode gathers them into a private knowledge base, then teaches, quizzes, and drills
+Send Cubbie your slides, notes, photos of the board, and lecture recordings. Clutch
+gathers them into a private knowledge base, then teaches, quizzes, and drills
 you from *your own material* — citing the source every time — and (with your yes)
 calls to wake you on exam morning. No API keys, no accounts beyond what you already
 connect to Cubbie.
@@ -33,7 +33,7 @@ Everything is grounded in the student's own material and cited back to the sourc
 Text the GitHub repo link to Cubbie and ask it to install the Skill:
 
 ```
-https://github.com/<your-username>/exam-mode
+https://github.com/<your-username>/clutch
 ```
 
 Cubbie clones the repo, reads `SKILL.md`, and the Skill is live from the next
@@ -42,7 +42,7 @@ only. Only the lecture deep-dive add-on needs a one-time install (Cubbie runs it
 from `SKILL.md`):
 
 ```bash
-python3 -m venv ~/.local/share/venvs/exam-mode && ~/.local/share/venvs/exam-mode/bin/pip install imageio-ffmpeg==0.5.1
+python3 -m venv ~/.local/share/venvs/clutch && ~/.local/share/venvs/clutch/bin/pip install imageio-ffmpeg==0.5.1
 ```
 
 ## Scripts
@@ -60,7 +60,7 @@ no network) except `lecture_frames.py`, which needs the ffmpeg add-on above.
 | `export.py` | `sheet` (Markdown study sheet), `flashcards` (Anki/Quizlet-importable CSV). |
 | `lecture_frames.py` | Extract key slide/board frames from a lecture video for Cubbie to read. |
 
-State lives under `~/.local/share/exam-mode/<course>/` (or `$EXAM_MODE_HOME`).
+State lives under `~/.local/share/clutch/<course>/` (or `$CLUTCH_HOME`).
 
 ## Test it (sample mode)
 
@@ -77,7 +77,7 @@ python3 scripts/mock_exam.py generate --sample
 python3 scripts/stats.py --sample
 python3 scripts/export.py sheet --sample
 python3 scripts/export.py flashcards --sample
-~/.local/share/venvs/exam-mode/bin/python scripts/lecture_frames.py --sample
+~/.local/share/venvs/clutch/bin/python scripts/lecture_frames.py --sample
 ```
 
 The `lecture_frames.py` sample generates a tiny test clip and extracts frames to

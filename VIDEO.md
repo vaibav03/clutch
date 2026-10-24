@@ -1,4 +1,4 @@
-# exam-mode — premium demo video (how to produce it)
+# Clutch — premium demo video (how to produce it)
 
 The `demo-video` skill (in your `vaibav03/hackathon-skills` repo) turns a URL into a narrated, premium product video (ElevenLabs voice, ducked CC-BY music, camera/cursor on the words). It's `disable-model-invocation: true` and key-gated, so **you run it** — here's everything prepped.
 
@@ -27,7 +27,7 @@ The page is at `http://localhost:8777/index.html`.
 ## 4. Premium narration draft (~165 words, ~70s — first person, natural)
 
 > Okay — finals week. Five lectures, a stack of slides, no idea where to start.
-> This is exam-mode. You just text it your slides and your lecture recordings, and it
+> This is Clutch. You just text it your slides and your lecture recordings, and it
 > quietly builds a study set out of your actual class. Then you can ask it anything —
 > "explain the Krebs cycle" — and it teaches you from your own slides, and tells you
 > exactly which one it pulled from. Honestly, the part I like most is it quizzes you on
@@ -35,7 +35,7 @@ The page is at `http://localhost:8777/index.html`.
 > sooner. The night before, you ask "am I ready?" and it's blunt about it — green,
 > green, red — so your last hour goes where it counts. And then, exam morning? It
 > actually calls you. Wakes you up, runs your three weak spots one more time. It
-> coaches you — it never does the graded work for you. That's exam-mode.
+> coaches you — it never does the graded work for you. That's Clutch.
 
 Scene cues (match the page scenes): intro on the hero → "text it your slides" on scene 1 → "teaches you… slide" on scene 2 → "quizzes you" on scene 3 → "am I ready… green green red" on scene 4 → "actually calls you" on scene 5 → end card.
 

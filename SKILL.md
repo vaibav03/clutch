@@ -1,9 +1,9 @@
 ---
-name: exam-mode
+name: clutch
 description: Turns a student's course materials into a personal exam coach — use when a student is studying for an exam, wants to learn or review a topic, asks for a practice quiz, or needs an exam wake-up call. It grounds every explanation and quiz question in the student's own notes, slides and lecture recordings, and uses spaced repetition, so it adds material-based teaching and practice that the built-in study-plan-builder does not.
 ---
 
-# Exam Mode
+# Clutch
 
 A study coach built on the student's own course material. Cubbie gathers the
 material into a private sandbox knowledge base, teaches from it, runs adaptive
@@ -48,17 +48,17 @@ The lecture deep-dive add-on (phase 4) needs ffmpeg. Install a bundled copy once
 into a virtual environment under HOME, which Cubbie keeps:
 
 ```bash
-python3 -m venv ~/.local/share/venvs/exam-mode && ~/.local/share/venvs/exam-mode/bin/pip install imageio-ffmpeg==0.5.1
+python3 -m venv ~/.local/share/venvs/clutch && ~/.local/share/venvs/clutch/bin/pip install imageio-ffmpeg==0.5.1
 ```
 
 Run the lecture frame tool with that environment's Python (so it finds the
 bundled ffmpeg):
 
 ```bash
-~/.local/share/venvs/exam-mode/bin/python scripts/lecture_frames.py ...
+~/.local/share/venvs/clutch/bin/python scripts/lecture_frames.py ...
 ```
 
-If `~/.local/share/venvs/exam-mode/bin/python` is missing later, run the install
+If `~/.local/share/venvs/clutch/bin/python` is missing later, run the install
 command again.
 
 Use a short course tag for `<COURSE>` (for example `BIO201`); use the same tag
@@ -171,7 +171,7 @@ Use this when the student sends a lecture VIDEO.
 2. Extract the key slide/board frames from the video:
 
    ```bash
-   ~/.local/share/venvs/exam-mode/bin/python scripts/lecture_frames.py --course <COURSE> --source "<label>" --video <path>
+   ~/.local/share/venvs/clutch/bin/python scripts/lecture_frames.py --course <COURSE> --source "<label>" --video <path>
    ```
 
    It prints how many frames it saved and their file paths.

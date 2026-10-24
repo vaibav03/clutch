@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Gamified progress summary for the exam-mode Cubbie Skill.
+"""Gamified progress summary for the Clutch Cubbie Skill.
 
 Cubbie runs this when a student wants to see how far they've come. It reads the
 course's chunks and mastery file and prints a tight, motivating dashboard:
@@ -27,8 +27,8 @@ import re
 import sys
 from datetime import date, timedelta
 
-BASE = os.environ.get("EXAM_MODE_HOME") or os.path.join(
-    os.path.expanduser("~"), ".local", "share", "exam-mode"
+BASE = os.environ.get("CLUTCH_HOME") or os.path.join(
+    os.path.expanduser("~"), ".local", "share", "clutch"
 )
 
 SAMPLE_COURSE = "SAMPLE101"
@@ -319,7 +319,7 @@ def cmd_cooked(args):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(
-        description="Gamified progress summary for exam-mode (read-only)."
+        description="Gamified progress summary for Clutch (read-only)."
     )
     # Allow a bare `--sample` as well as the explicit `show` subcommand.
     ap.add_argument("--course")

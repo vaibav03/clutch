@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Extract key video frames from a lecture recording for the "exam-mode" Cubbie Skill.
+"""Extract key video frames from a lecture recording for the "Clutch" Cubbie Skill.
 
 Cubbie can transcribe a lecture's AUDIO, but it cannot see the video: slides,
 whiteboard/blackboard writing, diagrams, and equations are invisible to an
@@ -16,7 +16,7 @@ Extraction modes:
     changes by more than a threshold, which lines up well with slide changes.
   - ``--interval N``: grab one frame every N seconds instead.
 
-Output frames land under the exam-mode state directory:
+Output frames land under the Clutch state directory:
     <state>/<course-slug>/frames/<source-slug>/frame_0001.jpg
 
 Setup (only if ffmpeg is missing):  pip install imageio-ffmpeg
@@ -41,7 +41,7 @@ def find_ffmpeg() -> str | None:
     """Locate an ffmpeg executable, preferring explicit config, then the
     bundled static build, then whatever is on PATH. Returns None if none found."""
     # 1. Explicit override via environment variable.
-    env_ffmpeg = os.environ.get("EXAM_MODE_FFMPEG")
+    env_ffmpeg = os.environ.get("CLUTCH_FFMPEG")
     if env_ffmpeg and Path(env_ffmpeg).exists():
         return env_ffmpeg
 
@@ -73,11 +73,11 @@ def slugify(value: str) -> str:
 
 
 def state_home() -> Path:
-    """Root directory where exam-mode keeps its data."""
-    env_home = os.environ.get("EXAM_MODE_HOME")
+    """Root directory where Clutch keeps its data."""
+    env_home = os.environ.get("CLUTCH_HOME")
     if env_home:
         return Path(env_home).expanduser()
-    return Path.home() / ".local" / "share" / "exam-mode"
+    return Path.home() / ".local" / "share" / "clutch"
 
 
 def frames_dir(course: str, source: str) -> Path:
@@ -229,7 +229,7 @@ def run_sample(ffmpeg: str | None) -> int:
 
     print(f"Using ffmpeg: {ffmpeg}")
 
-    with tempfile.TemporaryDirectory(prefix="exam-mode-sample-") as tmp:
+    with tempfile.TemporaryDirectory(prefix="clutch-sample-") as tmp:
         tmp_path = Path(tmp)
         sample_video = tmp_path / "testsrc.mp4"
 

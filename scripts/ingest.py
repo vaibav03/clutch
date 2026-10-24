@@ -17,8 +17,8 @@ import os
 import re
 import sys
 
-BASE = os.environ.get("EXAM_MODE_HOME") or os.path.join(
-    os.path.expanduser("~"), ".local", "share", "exam-mode"
+BASE = os.environ.get("CLUTCH_HOME") or os.path.join(
+    os.path.expanduser("~"), ".local", "share", "clutch"
 )
 
 

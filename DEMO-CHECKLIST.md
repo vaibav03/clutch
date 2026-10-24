@@ -1,4 +1,4 @@
-# exam-mode — test on a real Cubbie (phone checklist)
+# Clutch — test on a real Cubbie (phone checklist)
 
 First publish the repo (your call — currently local/unpublished) and text its branch link to your own Cubbie.
 Then walk these on your phone. Fill in a real course tag (e.g. BIO201) and one real set of slides/notes.

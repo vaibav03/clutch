@@ -1,11 +1,11 @@
-# exam-mode — build log & tracker
+# Clutch — build log & tracker
 
 Flagship Cubbie Skill: ingest course materials → sandbox knowledge base → teach → adaptive quiz → readiness → exam wake-up call. MVP first. Sandbox-only (no API keys). NOT to be published — local only until the user says otherwise.
 
 ## Shared contract (all scripts must follow)
 
 - Python 3.12, **stdlib only** (no pip installs for MVP), no network.
-- State dir: `$EXAM_MODE_HOME` or `~/.local/share/exam-mode/<course_slug>/` (slug = non-alphanumerics → `_`).
+- State dir: `$CLUTCH_HOME` or `~/.local/share/clutch/<course_slug>/` (slug = non-alphanumerics → `_`).
 - Every script has a `--sample` mode using course `SAMPLE101`, never touching real state.
 - Keep stdout < 8000 chars (Cubbie truncates). Exit 0 = ok, 2 = usage error.
 - Scripts CANNOT call Cubbie. Cubbie passes text in; scripts print what Cubbie needs next.
@@ -34,7 +34,7 @@ Flagship Cubbie Skill: ingest course materials → sandbox knowledge base → te
 | 5 | Validate (kit validator) + sample runs of all scripts | me | ✅ PASS — validator OK, no warnings; full e2e works |
 | 6 | Demo checklist for testing on real Cubbie | me | ✅ done → DEMO-CHECKLIST.md |
 
-## STATUS: MVP + feature pack complete & validated. Private repo: github.com/vaibav03/exam-mode (pushed).
+## STATUS: MVP + feature pack complete & validated. Private repo: github.com/vaibav03/clutch (pushed).
 
 ## Feature pack (added after MVP, subagent-built, all tested)
 | Piece | What | Status |
@@ -47,7 +47,7 @@ Flagship Cubbie Skill: ingest course materials → sandbox knowledge base → te
 | `SKILL.md` + `README.md` | integrated all features + teaching voice modes | ✅ validator OK |
 | `VIDEO.md` | premium narration + demo-video run steps (user runs; needs ElevenLabs key) | ✅ |
 
-Validator: `OK exam-mode` (only an informational "uncommitted changes" note, cleared on commit).
+Validator: `OK clutch` (only an informational "uncommitted changes" note, cleared on commit).
 Next: test on a real Cubbie (DEMO-CHECKLIST.md); make the video (VIDEO.md); flip repo public to install/submit.
 
 ## Lecture add-on (phase 4) — refined per user

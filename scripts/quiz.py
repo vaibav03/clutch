@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Adaptive-quiz engine for the exam-mode Cubbie Skill.
+"""Adaptive-quiz engine for the Clutch Cubbie Skill.
 
 Cubbie reads the course material, writes the actual questions, and reports how
 the student did. This script owns only the *bookkeeping*: it holds per-chunk
@@ -12,7 +12,7 @@ Subcommands:
   record     update one chunk's mastery after a right/wrong answer
   readiness  summarize mastery per topic (source) with a traffic-light score
 
-State lives under $EXAM_MODE_HOME (default ~/.local/share/exam-mode), in a
+State lives under $CLUTCH_HOME (default ~/.local/share/clutch), in a
 per-course subfolder named after a slugified course name.
 
 Usage:
@@ -29,8 +29,8 @@ import re
 import sys
 from datetime import date, timedelta
 
-BASE = os.environ.get("EXAM_MODE_HOME") or os.path.join(
-    os.path.expanduser("~"), ".local", "share", "exam-mode"
+BASE = os.environ.get("CLUTCH_HOME") or os.path.join(
+    os.path.expanduser("~"), ".local", "share", "clutch"
 )
 
 SAMPLE_COURSE = "SAMPLE101"
@@ -308,7 +308,7 @@ def cmd_readiness(args):
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(description="Adaptive-quiz engine for exam-mode.")
+    ap = argparse.ArgumentParser(description="Adaptive-quiz engine for Clutch.")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     p_next = sub.add_parser("next", help="select chunks that are due for review")

@@ -23,8 +23,8 @@ import re
 import sys
 from collections import Counter
 
-BASE = os.environ.get("EXAM_MODE_HOME") or os.path.join(
-    os.path.expanduser("~"), ".local", "share", "exam-mode"
+BASE = os.environ.get("CLUTCH_HOME") or os.path.join(
+    os.path.expanduser("~"), ".local", "share", "clutch"
 )
 
 # BM25 parameters (standard defaults).

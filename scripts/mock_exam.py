@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""One-shot mock exam for the exam-mode Cubbie Skill.
+"""One-shot mock exam for the Clutch Cubbie Skill.
 
 Unlike quiz.py's spaced daily drip, this builds a single *broad* practice exam
 that samples across the whole course. The script can't call Cubbie, so it only
@@ -16,7 +16,7 @@ Subcommands:
   grade      update mastery for each answered item, print a scorecard, and clear
              the saved exam
 
-State lives under $EXAM_MODE_HOME (default ~/.local/share/exam-mode), in a
+State lives under $CLUTCH_HOME (default ~/.local/share/clutch), in a
 per-course subfolder named after a slugified course name.
 
 Usage:
@@ -33,8 +33,8 @@ import re
 import sys
 from datetime import date, datetime, timedelta
 
-BASE = os.environ.get("EXAM_MODE_HOME") or os.path.join(
-    os.path.expanduser("~"), ".local", "share", "exam-mode"
+BASE = os.environ.get("CLUTCH_HOME") or os.path.join(
+    os.path.expanduser("~"), ".local", "share", "clutch"
 )
 
 SAMPLE_COURSE = "SAMPLE101"
@@ -397,7 +397,7 @@ def cmd_grade(args):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(
-        description="One-shot broad mock exam for exam-mode."
+        description="One-shot broad mock exam for Clutch."
     )
     sub = ap.add_subparsers(dest="cmd", required=True)
 
